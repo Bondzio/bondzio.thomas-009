@@ -1,0 +1,108 @@
+Skip to content
+
+
+  
+Pull requests 
+Issues 
+Marketplace 
+Explore 
+
+
+
+
+ 
+
+
+Watch 
+12 
+Star 
+0 
+Fork 
+2 
+
+IBM/kubernetes-networking 
+Code 
+Issues 0 
+Pull requests 1 
+Projects 0 
+Wiki 
+Insights 
+Branch: master 
+kubernetes-networking/guestbook-ingress.yaml 
+Find file 
+Copy path 
+ GregDritschler first pass 
+e876ab8 on 1 Oct 2018 
+1 contributor 
+32 lines (32 sloc) 587 Bytes 
+Raw
+Blame
+History
+
+
+apiVersion: v1
+
+kind: Service
+
+metadata:
+
+  name: guestbook
+
+  labels:
+
+    app: guestbook
+
+spec:
+
+  ports:
+
+  - port: 3000
+
+    targetPort: http-server
+
+  selector:
+
+    app: guestbook
+
+---
+
+apiVersion: extensions/v1beta1
+
+kind: Ingress
+
+metadata:
+
+  name: guestbook
+
+  annotations:
+
+    ingress.bluemix.net/rewrite-path: "serviceName=guestbook rewrite=/"
+
+spec:
+
+  tls:
+
+  - hosts:
+
+    - <ingress-subdomain>
+
+    secretName: <ingress-secret>
+
+  rules:
+
+  - host: <ingress-subdomain>
+
+    http:
+
+      paths:
+
+      - path: /guestbook/
+
+        backend:
+
+          serviceName: guestbook
+
+          servicePort: 3000
+
+
+
